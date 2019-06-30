@@ -28,6 +28,12 @@ final class ManifestTargetGeneratorTests: XCTestCase {
         XCTAssertEqual(target.product, .staticFramework)
         XCTAssertEqual(target.sources.map { $0.path.pathString }, ["/test/Project.swift"])
         XCTAssertNil(target.infoPlist)
+        XCTAssertEqual(target.actions, [
+            TargetAction(name: "Re-generate Project",
+                         order: .post,
+                         tool: "tuist",
+                         arguments: ["generate"]),
+        ])
         assertValidManifestBuildSettings(for: target,
                                          expectedSearchPath: "/test")
     }

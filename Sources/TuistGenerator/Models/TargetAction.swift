@@ -3,7 +3,7 @@ import Foundation
 import TuistCore
 
 /// It represents a target script build phase
-public struct TargetAction {
+public struct TargetAction: Equatable {
     /// Order when the action gets executed.
     ///
     /// - pre: Before the sources and resources build phase.

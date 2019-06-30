@@ -29,6 +29,12 @@ class ManifestTargetGenerator: ManifestTargetGenerating {
                       bundleId: "io.tuist.manifests.${PRODUCT_NAME:rfc1034identifier}",
                       settings: settings,
                       sources: [(path: manifest, compilerFlags: nil)],
+                      actions: [
+                          TargetAction(name: "Re-generate Project",
+                                       order: .post,
+                                       tool: "tuist",
+                                       arguments: ["generate"]),
+                      ],
                       filesGroup: .group(name: "Manifest"))
     }
 
