@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import HomePage from '../frontend/components/pages/home'
+import IndexPage from '../frontend/components/pages/IndexPage'
 
 const stories = storiesOf('Components', module)
 
-stories.add('Home', () => <HomePage />, { info: { inline: true } })
+stories.add('Home', () => <IndexPage />, { info: { inline: true } })
