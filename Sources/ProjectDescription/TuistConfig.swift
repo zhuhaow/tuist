@@ -6,11 +6,11 @@ public class TuistConfig: Codable {
     ///
     /// - generateManifestElement: When passed, Tuist generates the projects, targets and schemes to compile the project manifest.
     public enum GenerationOption: String, Codable {
-        case generateManifestElement
+        case generateManifest
     }
 
     /// Generation options.
-    let generationOptions: [GenerationOption]
+    public let generationOptions: [GenerationOption]
 
     /// Initializes the tuist cofiguration.
     ///
@@ -18,5 +18,11 @@ public class TuistConfig: Codable {
     public init(generationOptions: [GenerationOption]) {
         self.generationOptions = generationOptions
         dumpIfNeeded(self)
+    }
+}
+
+public extension TuistConfig {
+    static var `default`: TuistConfig {
+        return TuistConfig(generationOptions: [.generateManifest])
     }
 }
