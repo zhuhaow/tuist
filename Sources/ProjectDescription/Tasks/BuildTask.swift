@@ -1,17 +1,15 @@
 import Foundation
 
 public final class BuildTask: Codable, Equatable {
-
     /// Task name. (e.g. tuist build {name}).
     private let name: String
-    
+
     /// Scheme to be built.
     private let scheme: String
-    
+
     /// Project configuration to be built.
     private let configuration: String
-    
-    
+
     /// Initializes the build task with its attribute.
     ///
     /// - Parameters:
@@ -25,7 +23,7 @@ public final class BuildTask: Codable, Equatable {
         self.scheme = scheme
         self.configuration = configuration
     }
-    
+
     /// Initializes the build task with its attribute.
     ///
     /// - Parameters:
@@ -40,9 +38,9 @@ public final class BuildTask: Codable, Equatable {
                          scheme: scheme,
                          configuration: configuration)
     }
-    
+
     // MARK: - Equatable
-    
+
     public static func == (lhs: BuildTask, rhs: BuildTask) -> Bool {
         return lhs.name == rhs.name &&
             lhs.scheme == rhs.scheme &&

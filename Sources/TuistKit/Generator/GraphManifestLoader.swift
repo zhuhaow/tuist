@@ -55,6 +55,7 @@ enum Manifest: CaseIterable {
     case workspace
     case tuistConfig
     case setup
+    case tasks
 
     var fileName: String {
         switch self {
@@ -66,6 +67,8 @@ enum Manifest: CaseIterable {
             return "TuistConfig.swift"
         case .setup:
             return "Setup.swift"
+        case .tasks:
+            return "Tasks.swift"
         }
     }
 }
@@ -77,6 +80,13 @@ protocol GraphManifestLoading {
     /// - Returns: Loaded TuistConfig.swift file.
     /// - Throws: An error if the file has a syntax error.
     func loadTuistConfig(at path: AbsolutePath) throws -> ProjectDescription.TuistConfig
+
+    /// Loads the Tasks.swift in the given directory.
+    ///
+    /// - Parameter path: Path to the directory that contains the Tasks.swift file.
+    /// - Returns: Loaded Tasks.swift file.
+    /// - Throws: An error if the file has a syntax error.
+    func loadTasks(at path: AbsolutePath) throws -> ProjectDescription.Tasks
 
     func loadProject(at path: AbsolutePath) throws -> ProjectDescription.Project
     func loadWorkspace(at path: AbsolutePath) throws -> ProjectDescription.Workspace
@@ -134,6 +144,15 @@ class GraphManifestLoader: GraphManifestLoading {
     /// - Throws: An error if the file has a syntax error.
     func loadTuistConfig(at path: AbsolutePath) throws -> ProjectDescription.TuistConfig {
         return try loadManifest(.tuistConfig, at: path)
+    }
+
+    /// Loads the Tasks.swift in the given directory.
+    ///
+    /// - Parameter path: Path to the directory that contains the Tasks.swift file.
+    /// - Returns: Loaded Tasks.swift file.
+    /// - Throws: An error if the file has a syntax error.
+    func loadTasks(at path: AbsolutePath) throws -> ProjectDescription.Tasks {
+        return try loadManifest(.tasks, at: path)
     }
 
     func loadProject(at path: AbsolutePath) throws -> ProjectDescription.Project {
