@@ -1,0 +1,60 @@
+---
+name: Showroom
+---
+
+import { List } from 'semantic-ui-react'
+
+
+# Showroom
+
+As a side effect of making the description of a project easier, describing projects to others is easier too. This page contains examples of project configurations: *the folders structure and the manifest files.*
+
+> If your project uses Tuist and you would like to share your configuration with others don't hesitate to open a PR and include your example here. Don't forget to add a reference to your company or GitHub username.
+
+## Setup 1 - Microfeatures
+
+Microfeatures is a proposal for organizing modular projects that suggests placing features in modules _(frameworks or libraries)_ that are distributed horizontally. As a result, changes in core modules don't invalidate a large dependency graph causing builds to be significantly slow.
+
+<List>
+  <List.Item>
+    <List.Icon name='folder' />
+    <List.Content>
+      <List.Header>Projects</List.Header>
+      <List.Description>This directory contains all the projects</List.Description>
+      <List.List>
+        <List.Item>
+          <List.Icon name='folder' />
+          <List.Content>
+            <List.Header>SoundCloud</List.Header>
+            <List.Description>Main iOS application</List.Description>
+            <List.List>
+              <List.Item>
+                <List.Icon name='file' />
+                <List.Content>
+                  <List.Header>Project.swift</List.Header>
+                  <List.Description>Contains build settings for gulp</List.Description>
+                </List.Content>
+              </List.Item>
+            </List.List>
+          </List.Content>
+        </List.Item>
+         <List.Item>
+          <List.Icon name='folder' />
+          <List.Content>
+            <List.Header>Search</List.Header>
+            <List.Description>Contains the Search framework</List.Description>
+            <List.List>
+              <List.Item>
+                <List.Icon name='file' />
+                <List.Content>
+                  <List.Header>Project.swift</List.Header>
+                  <List.Description>Contains build settings for gulp</List.Description>
+                </List.Content>
+              </List.Item>
+            </List.List>
+          </List.Content>
+        </List.Item>
+      </List.List>
+    </List.Content>
+  </List.Item>
+</List>
