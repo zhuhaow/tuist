@@ -268,3 +268,11 @@ An example of a workspace that has a dependency cycle between targets in differe
 ## ios_app_with_carthage_frameworks
 
 An example of an iOS app that contains Carthage frameworks \*(fat frameworks with device & simulators architectures)\*. This fixture is useful to test the script that embeds them stripping the architectures that are not necessary.
+
+## ios_app_with_xcframeworks
+
+An example of an application which depends on prebuilt `.xcframework`s.
+
+The `.xcframework` can be obtained by running the `build.sh` script within the each of the framework directories.
+
+e.g. `ios_app_with_xcframeworks/Frameworks/MyFramework/build.sh`
