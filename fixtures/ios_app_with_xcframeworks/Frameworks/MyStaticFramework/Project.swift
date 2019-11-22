@@ -1,11 +1,11 @@
 import ProjectDescription
 
-let project = Project(name: "MyFramework",
+let project = Project(name: "MyStaticFramework",
                       targets: [
-                        Target(name: "MyFramework",
+                        Target(name: "MyStaticFramework",
                                platform: .iOS,
-                               product: .framework,
-                               bundleId: "io.tuist.MyFramework",
+                               product: .staticFramework,
+                               bundleId: "io.tuist.MyStaticFramework",
                                infoPlist: "Info.plist",
                                sources: ["Sources/**"],
                                resources: [
@@ -14,7 +14,8 @@ let project = Project(name: "MyFramework",
                                ],
                                dependencies: [
                                     /* Target dependencies can be defined here */
-                                    // .framework(path: "Frameworks/MyFramework.framework")
+                                    // .framework(path: "Frameworks/MyStaticFramework.framework")
                                 ], settings: Settings(base: [
                                         "BUILD_LIBRARY_FOR_DISTRIBUTION" : "YES"
-                                ])))
+                                ]))
+                      ])
