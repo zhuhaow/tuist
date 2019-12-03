@@ -38,7 +38,7 @@ final class ProjectGenerator: ProjectGenerating {
     let configGenerator: ConfigGenerating
 
     /// Generator for the project schemes.
-    let schemesGenerator: SchemesGenerator
+    let schemesGenerator: SchemesGenerating
 
     /// Generator for the project derived files.
     let derivedFileGenerator: DerivedFileGenerating
@@ -54,7 +54,7 @@ final class ProjectGenerator: ProjectGenerating {
     ///   - derivedFileGenerator: Generator for the project derived files.
     init(targetGenerator: TargetGenerating = TargetGenerator(),
          configGenerator: ConfigGenerating = ConfigGenerator(),
-         schemesGenerator: SchemesGenerator = SchemesGenerator(),
+         schemesGenerator: SchemesGenerating = SchemesGenerator(),
          derivedFileGenerator: DerivedFileGenerating = DerivedFileGenerator()) {
         self.targetGenerator = targetGenerator
         self.configGenerator = configGenerator
@@ -103,7 +103,9 @@ final class ProjectGenerator: ProjectGenerating {
                                               groups: groups,
                                               pbxproj: pbxproj,
                                               sourceRootPath: sourceRootPath)
-        let configurationList = try configGenerator.generateProjectConfig(project: project, pbxproj: pbxproj, fileElements: fileElements)
+        let configurationList = try configGenerator.generateProjectConfig(project: project,
+                                                                          pbxproj: pbxproj,
+                                                                          fileElements: fileElements)
         let pbxProject = try generatePbxproject(project: project,
                                                 configurationList: configurationList,
                                                 groups: groups,
@@ -250,7 +252,7 @@ final class ProjectGenerator: ProjectGenerating {
                        workspace: XCWorkspace,
                        pbxproj: PBXProj,
                        project: Project,
-                       graph: Graphing) throws -> GeneratedProject {
+                       graph _: Graphing) throws -> GeneratedProject {
         var generatedProject: GeneratedProject!
 
         try FileHandler.shared.inTemporaryDirectory { temporaryPath in
@@ -261,11 +263,9 @@ final class ProjectGenerator: ProjectGenerating {
             generatedProject = GeneratedProject(pbxproj: pbxproj,
                                                 path: temporaryPath,
                                                 targets: nativeTargets,
-                                                name: xcodeprojPath.basename)
+                                                name: xcodeprojPath.components.last!)
             try writeSchemes(project: project,
-                             generatedProject: generatedProject,
-                             xcprojectPath: temporaryPath,
-                             graph: graph)
+                             generatedProject: generatedProject)
             try FileHandler.shared.replace(xcodeprojPath, with: temporaryPath)
         }
 
@@ -280,13 +280,9 @@ final class ProjectGenerator: ProjectGenerating {
     }
 
     private func writeSchemes(project: Project,
-                              generatedProject: GeneratedProject,
-                              xcprojectPath: AbsolutePath,
-                              graph: Graphing) throws {
-        try schemesGenerator.generateProjectSchemes(project: project,
-                                                    xcprojectPath: xcprojectPath,
-                                                    generatedProject: generatedProject,
-                                                    graph: graph)
+                              generatedProject: GeneratedProject) throws {
+        try schemesGenerator.generateTargetSchemes(project: project,
+                                                   generatedProject: generatedProject)
     }
 
     private func determineProjectConstants(graph: Graphing) throws -> ProjectConstants {

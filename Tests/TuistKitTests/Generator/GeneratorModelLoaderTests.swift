@@ -539,13 +539,11 @@ class GeneratorModelLoaderTest: TuistUnitTestCase {
         // Given
         let manifest = SchemeManifest.test(name: "Scheme",
                                            shared: false)
-        let projectPath = AbsolutePath("/somepath/Project")
-        
         // When
-        let model = TuistCore.Scheme.from(manifest: manifest, projectPath: projectPath)
+        let model = TuistCore.Scheme.from(manifest: manifest)
 
         // Then
-        assert(scheme: model, matches: manifest, path: projectPath)
+        assert(scheme: model, matches: manifest)
     }
 
     func test_scheme_withActions() throws {
@@ -566,14 +564,11 @@ class GeneratorModelLoaderTest: TuistUnitTestCase {
                                            buildAction: buildAction,
                                            testAction: testAction,
                                            runAction: runActions)
-        
-        let projectPath = AbsolutePath("/somepath/Project")
-        
         // When
-        let model = TuistCore.Scheme.from(manifest: manifest, projectPath: projectPath)
+        let model = TuistCore.Scheme.from(manifest: manifest)
 
         // Then
-        assert(scheme: model, matches: manifest, path: projectPath)
+        assert(scheme: model, matches: manifest)
     }
 
     func test_generatorModelLoaderError_type() {
@@ -796,17 +791,16 @@ class GeneratorModelLoaderTest: TuistUnitTestCase {
 
     func assert(scheme: TuistCore.Scheme,
                 matches manifest: ProjectDescription.Scheme,
-                path: AbsolutePath,
                 file: StaticString = #file,
                 line: UInt = #line) {
         XCTAssertEqual(scheme.name, manifest.name, file: file, line: line)
         XCTAssertEqual(scheme.shared, manifest.shared, file: file, line: line)
         optionalAssert(scheme.buildAction, manifest.buildAction) {
-            assert(buildAction: $0, matches: $1, path: path, file: file, line: line)
+            assert(buildAction: $0, matches: $1, file: file, line: line)
         }
 
         optionalAssert(scheme.testAction, manifest.testAction) {
-            assert(testAction: $0, matches: $1, path: path, file: file, line: line)
+            assert(testAction: $0, matches: $1, file: file, line: line)
         }
 
         optionalAssert(scheme.runAction, manifest.runAction) {
@@ -816,19 +810,16 @@ class GeneratorModelLoaderTest: TuistUnitTestCase {
 
     func assert(buildAction: TuistCore.BuildAction,
                 matches manifest: ProjectDescription.BuildAction,
-                path: AbsolutePath,
                 file: StaticString = #file,
                 line: UInt = #line) {
-        XCTAssertEqual(buildAction.targets, manifest.targets.map { TargetReference(projectPath: path, name: $0) }, file: file, line: line)
+        XCTAssertEqual(buildAction.targets, manifest.targets, file: file, line: line)
     }
 
     func assert(testAction: TuistCore.TestAction,
                 matches manifest: ProjectDescription.TestAction,
-                path: AbsolutePath,
                 file: StaticString = #file,
                 line: UInt = #line) {
-
-        let targets = manifest.targets.map { TestableTarget.from(manifest: $0, projectPath: path) }
+        let targets = manifest.targets.map { TestableTarget.from(manifest: $0) }
         XCTAssertEqual(testAction.targets, targets, file: file, line: line)
         XCTAssertTrue(testAction.configurationName == manifest.configurationName, file: file, line: line)
         XCTAssertEqual(testAction.coverage, manifest.coverage, file: file, line: line)
@@ -841,13 +832,10 @@ class GeneratorModelLoaderTest: TuistUnitTestCase {
                 matches manifest: ProjectDescription.RunAction,
                 file: StaticString = #file,
                 line: UInt = #line) {
-        var runActionExecutable: String?
-        if let executable = runAction.executable { runActionExecutable = executable.name }
-            
-        XCTAssertEqual(runActionExecutable, manifest.executable, file: file, line: line)
+        XCTAssertEqual(runAction.executable, manifest.executable, file: file, line: line)
         XCTAssertTrue(runAction.configurationName == manifest.configurationName, file: file, line: line)
         optionalAssert(runAction.arguments, manifest.arguments) {
-            self.assert(arguments: $0, matches: $1, file: file, line: line)
+            assert(arguments: $0, matches: $1, file: file, line: line)
         }
     }
 
