@@ -7,8 +7,6 @@ import { slide as BurgerMenu } from 'react-burger-menu'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSlack } from '@fortawesome/free-brands-svg-icons'
 import theme from '../gatsby-plugin-theme-ui/index'
-import { useColorMode } from 'theme-ui'
-import ToggleButton from './toggle-button'
 
 import {
   faBox,
@@ -86,13 +84,7 @@ const Menu = () => {
       }
     }
   `)
-  const [colorMode] = useColorMode()
-  let colors = {}
-  if (!colorMode || colorMode == 'light') {
-    colors = theme.colors
-  } else {
-    colors = theme.colors.modes[colorMode]
-  }
+  let colors = theme.colors
   const sx = {
     display: 'flex',
     flexDirection: 'row',
@@ -163,10 +155,6 @@ const Menu = () => {
           <span sx={{ marginLeft: 3 }}>Slack</span>
         </div>
       </a>
-
-      <div sx={{ visibility: ['visible', 'visible', 'hidden'] }}>
-        <ToggleButton />
-      </div>
     </BurgerMenu>
   )
 }
