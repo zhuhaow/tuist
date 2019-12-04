@@ -44,6 +44,7 @@
     "react-markdown": "^4.2.2",
     "react-spring": "^8.0.22",
     "react-typography": "^0.16.19",
+    "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.1",
     "typography": "^0.16.19",
     "typography-theme-ocean-beach": "^0.16.19"
