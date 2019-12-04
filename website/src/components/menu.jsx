@@ -13,9 +13,7 @@ import {
   faPencilAlt,
   faBook,
   faFileCode,
-  faSatellite,
   faMobile,
-  faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons'
 
 const styles = ({ primaryColor, textColor }) => {

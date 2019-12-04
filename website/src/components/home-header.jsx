@@ -1,31 +1,32 @@
 /** @jsx jsx */
-import { jsx, Styled } from "theme-ui";
+import { jsx, Styled } from 'theme-ui'
 
-import { withPrefix } from "gatsby";
-import StyledHeader from "./styled-header";
+import { withPrefix } from 'gatsby'
+import StyledHeader from './styled-header'
 
 const HomeHeader = ({ gettingStartedUrl }) => {
   return (
     <StyledHeader p={[4, 4]} pb={[3, 3]}>
       <div
         sx={{
-          display: "flex",
+          display: 'flex',
           flex: 1,
-          flexDirection: "column",
-          alignItems: "center"
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <img
-          src={withPrefix("logo.svg")}
+          src={withPrefix('logo.svg')}
           sx={{ height: [60, 100], width: [60, 100] }}
+          alt="Tuist's logotype"
         />
         <Styled.h1
           sx={{
             p: [2, 2],
             flex: 1,
-            color: "primaryComplementary",
-            display: "flex",
-            marginBottom: 1
+            color: 'primaryComplementary',
+            display: 'flex',
+            marginBottom: 1,
           }}
         >
           Tuist
@@ -34,9 +35,9 @@ const HomeHeader = ({ gettingStartedUrl }) => {
         <div
           sx={{
             flex: 1,
-            width: ["70%", "90%"],
-            color: "primaryComplementary",
-            textAlign: "center"
+            width: ['70%', '90%'],
+            color: 'primaryComplementary',
+            textAlign: 'center',
           }}
         >
           Bootstrap, maintain, and interact with Xcode projects at any scale
@@ -44,10 +45,10 @@ const HomeHeader = ({ gettingStartedUrl }) => {
 
         <div
           sx={{
-            display: "flex",
+            display: 'flex',
             p: 3,
-            flexWrap: "wrap",
-            justifyContent: "center"
+            flexWrap: 'wrap',
+            justifyContent: 'center',
           }}
         >
           <a
@@ -55,16 +56,16 @@ const HomeHeader = ({ gettingStartedUrl }) => {
             target="__blank"
             sx={{
               borderRadius: 2,
-              color: "primary",
+              color: 'primary',
               p: 3,
-              bg: "primaryComplementary",
-              "&:hover": {
-                textDecoration: "none",
-                bg: "primary",
-                color: "primaryComplementary",
+              bg: 'primaryComplementary',
+              '&:hover': {
+                textDecoration: 'none',
+                bg: 'primary',
+                color: 'primaryComplementary',
                 boxShadow: theme =>
-                  `0px 0px 0px 1px ${theme.colors.primaryComplementary} inset`
-              }
+                  `0px 0px 0px 1px ${theme.colors.primaryComplementary} inset`,
+              },
             }}
           >
             Getting started
@@ -72,7 +73,7 @@ const HomeHeader = ({ gettingStartedUrl }) => {
         </div>
       </div>
     </StyledHeader>
-  );
-};
+  )
+}
 
-export default HomeHeader;
+export default HomeHeader

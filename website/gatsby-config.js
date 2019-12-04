@@ -15,18 +15,11 @@ module.exports = {
     spectrumUrl: 'https://spectrum.chat/tuist',
   },
   plugins: [
-    `gatsby-plugin-netlify`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-offline`,
     `gatsby-plugin-theme-ui`,
     `gatsby-transformer-yaml`,
     `gatsby-plugin-react-helmet`,
-    {
-      resolve: `gatsby-plugin-typography`,
-      options: {
-        pathToConfigModule: `src/utils/typography`,
-      },
-    },
     {
       resolve: `gatsby-source-filesystem`,
       name: 'data',

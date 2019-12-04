@@ -1,16 +1,16 @@
 /** @jsx jsx */
-import { jsx } from "theme-ui";
-import { MDXRenderer } from "gatsby-plugin-mdx";
+import { jsx } from 'theme-ui'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 
-import Layout from "../components/layout";
-import Meta from "../components/meta";
-import TitledHeader from "../components/titled-header";
-import Footer from "../components/footer";
-import { graphql } from "gatsby";
-import moment from "moment";
-import Main from "../components/main";
-import EditPage from "../components/edit-page";
-import Share from "../components/share";
+import Layout from '../components/layout'
+import Meta from '../components/meta'
+import TitledHeader from '../components/titled-header'
+import Footer from '../components/footer'
+import { graphql } from 'gatsby'
+import moment from 'moment'
+import Main from '../components/main'
+import EditPage from '../components/edit-page'
+import Share from '../components/share'
 
 const Avatar = ({ author: { avatar, twitter } }) => {
   return (
@@ -20,28 +20,29 @@ const Avatar = ({ author: { avatar, twitter } }) => {
           my: [20, 0],
           width: [90, 140],
           height: [90, 140],
-          borderRadius: [45, 70]
+          borderRadius: [45, 70],
         }}
+        alt="Author's avatar"
         src={avatar}
       />
     </a>
-  );
-};
+  )
+}
 
 const IndexPage = ({
   data: {
     mdx,
-    allAuthorsYaml: { edges }
-  }
+    allAuthorsYaml: { edges },
+  },
 }) => {
-  const post = mdx;
-  const authors = edges.map(edge => edge.node);
+  const post = mdx
+  const authors = edges.map(edge => edge.node)
   const author = authors.find(
     author => author.handle === post.frontmatter.author
-  );
+  )
   const subtitle = `Published by ${author.name} on ${moment(
     post.fields.date
-  ).format("MMMM Do YYYY")}`;
+  ).format('MMMM Do YYYY')}`
   return (
     <Layout>
       <Meta
@@ -69,10 +70,10 @@ const IndexPage = ({
       </Main>
       <Footer />
     </Layout>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage
 
 export const query = graphql`
   query($slug: String!) {
@@ -107,4 +108,4 @@ export const query = graphql`
       }
     }
   }
-`;
+`
