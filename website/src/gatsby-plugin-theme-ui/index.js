@@ -38,7 +38,7 @@ const lineHeights = {
 }
 
 // Font sizes
-const fontSizes = [12, 14, 16, 20, 24, 32]
+const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64]
 fontSizes.body = fontSizes[2]
 fontSizes.display = fontSizes[5]
 
