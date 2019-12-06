@@ -56,6 +56,10 @@ const colors = {
   secondary: '#7768AF',
   accent: '#64c4ed',
   muted: '#F8F8F8',
+  // New colors
+  gray1: '#333333',
+  gray2: '#4F4F4F',
+  gray3: '#828282',
 }
 
 // Styles
