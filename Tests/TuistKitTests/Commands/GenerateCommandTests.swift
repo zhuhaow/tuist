@@ -1,11 +1,11 @@
 import Basic
 import Foundation
 import SPMUtility
-import TuistLoader
+import TuistCore
 import TuistSupport
 import XcodeProj
 import XCTest
-
+@testable import TuistCoreTesting
 @testable import TuistKit
 @testable import TuistLoaderTesting
 @testable import TuistSupportTesting
@@ -96,6 +96,7 @@ final class GenerateCommandTests: TuistUnitTestCase {
     func test_run_withRelativePathParameter() throws {
         // Given
         let temporaryPath = try self.temporaryPath()
+        let graph = Graph.test()
         let result = try parser.parse([GenerateCommand.command, "--path", "subpath"])
         var generationPath: AbsolutePath?
         manifestLoader.manifestsAtStub = { _ in
@@ -103,7 +104,7 @@ final class GenerateCommandTests: TuistUnitTestCase {
         }
         generator.generateProjectWorkspaceStub = { path, _ in
             generationPath = path
-            return path.appending(component: "project.xcworkspace")
+            return (path.appending(component: "project.xcworkspace"), graph)
         }
 
         // When
@@ -116,13 +117,14 @@ final class GenerateCommandTests: TuistUnitTestCase {
     func test_run_withAbsoultePathParameter() throws {
         // Given
         let result = try parser.parse([GenerateCommand.command, "--path", "/some/path"])
+        let graph = Graph.test()
         var generationPath: AbsolutePath?
         manifestLoader.manifestsAtStub = { _ in
             Set([.project])
         }
         generator.generateProjectWorkspaceStub = { path, _ in
             generationPath = path
-            return path.appending(component: "project.xcworkspace")
+            return (path.appending(component: "project.xcworkspace"), graph)
         }
 
         // When
@@ -135,6 +137,7 @@ final class GenerateCommandTests: TuistUnitTestCase {
     func test_run_withoutPathParameter() throws {
         // Given
         let temporaryPath = try self.temporaryPath()
+        let graph = Graph.test()
         let result = try parser.parse([GenerateCommand.command])
         var generationPath: AbsolutePath?
         manifestLoader.manifestsAtStub = { _ in
@@ -142,7 +145,7 @@ final class GenerateCommandTests: TuistUnitTestCase {
         }
         generator.generateProjectWorkspaceStub = { path, _ in
             generationPath = path
-            return path.appending(component: "project.xcworkspace")
+            return (path.appending(component: "project.xcworkspace"), graph)
         }
 
         // When
@@ -155,6 +158,7 @@ final class GenerateCommandTests: TuistUnitTestCase {
     func test_run_withProjectOnlyParameter() throws {
         // Given
         let temporaryPath = try self.temporaryPath()
+        let graph = Graph.test()
         let result = try parser.parse([GenerateCommand.command, "--project-only"])
         var generationPath: AbsolutePath?
         manifestLoader.manifestsAtStub = { _ in
@@ -162,7 +166,7 @@ final class GenerateCommandTests: TuistUnitTestCase {
         }
         generator.generateProjectAtStub = { path in
             generationPath = path
-            return path.appending(component: "project.xcodeproj")
+            return (path.appending(component: "project.xcodeproj"), graph)
         }
 
         // When
