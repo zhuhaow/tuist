@@ -11,12 +11,15 @@ public enum FileElement: Codable, Equatable {
     /// A glob pattern of files to include
     case glob(pattern: Path)
 
+    case globWithExclude(pattern: Path, excluding: Path)
+
     /// Relative path to a directory to include
     /// as a folder reference
     case folderReference(path: Path)
 
     private enum TypeName: String, Codable {
         case glob
+        case globWithExclude
         case folderReference
     }
 
@@ -24,6 +27,8 @@ public enum FileElement: Codable, Equatable {
         switch self {
         case .glob:
             return .glob
+        case .globWithExclude:
+            return .globWithExclude
         case .folderReference:
             return .folderReference
         }
@@ -32,6 +37,7 @@ public enum FileElement: Codable, Equatable {
     public enum CodingKeys: String, CodingKey {
         case type
         case pattern
+        case excluding
         case path
     }
 
@@ -42,6 +48,10 @@ public enum FileElement: Codable, Equatable {
         case .glob:
             let pattern = try container.decode(Path.self, forKey: .pattern)
             self = .glob(pattern: pattern)
+        case .globWithExclude:
+            let pattern = try container.decode(Path.self, forKey: .pattern)
+            let excluding = try container.decode(Path.self, forKey: .excluding)
+            self = .globWithExclude(pattern: pattern, excluding: excluding)
         case .folderReference:
             let path = try container.decode(Path.self, forKey: .path)
             self = .folderReference(path: path)
@@ -54,6 +64,9 @@ public enum FileElement: Codable, Equatable {
         switch self {
         case let .glob(pattern: pattern):
             try container.encode(pattern, forKey: .pattern)
+        case let .globWithExclude(pattern: pattern, excluding: excluding):
+            try container.encode(pattern, forKey: .pattern)
+            try container.encode(excluding, forKey: .excluding)
         case let .folderReference(path: path):
             try container.encode(path, forKey: .path)
         }

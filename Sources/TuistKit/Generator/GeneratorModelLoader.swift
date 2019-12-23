@@ -209,6 +209,15 @@ extension TuistCore.FileElement {
         case let .glob(pattern: pattern):
             let resolvedPath = try generatorPaths.resolve(path: pattern)
             return globFiles(resolvedPath).map(FileElement.file)
+        case let .globWithExclude(pattern: pattern, excluding: excluding):
+            let resolvedIncludedPath = try generatorPaths.resolve(path: pattern)
+            let included = Set(globFiles(resolvedIncludedPath))
+            let resolvedExcludedPath = try generatorPaths.resolve(path: excluding)
+
+            let excluded = globFiles(resolvedExcludedPath)
+            let paths = included.subtracting(excluded)
+
+            return paths.map(FileElement.file)
         case let .folderReference(path: folderReferencePath):
             let resolvedPath = try generatorPaths.resolve(path: folderReferencePath)
             return folderReferences(resolvedPath).map(FileElement.folderReference)

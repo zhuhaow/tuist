@@ -19,7 +19,7 @@ extension AbsolutePath {
     ///
     /// - Parameter pattern: Relative glob pattern used to match the paths.
     /// - Returns: List of paths that match the given pattern.
-    public func glob(_ pattern: String) -> [AbsolutePath] {
+    public func glob(_ pattern: String, excluding: String? = nil) -> [AbsolutePath] {
         Glob(pattern: appending(RelativePath(pattern)).pathString).paths.map { AbsolutePath($0) }
     }
 

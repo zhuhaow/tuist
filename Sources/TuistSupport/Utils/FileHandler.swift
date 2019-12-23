@@ -216,7 +216,8 @@ public class FileHandler: FileHandling {
         }
     }
 
-    public func glob(_ path: AbsolutePath, glob: String) -> [AbsolutePath] {
+    public func glob(_ path: AbsolutePath, glob: String, excuding: String? = nil) -> [AbsolutePath] {
+        
         path.glob(glob)
     }
 
