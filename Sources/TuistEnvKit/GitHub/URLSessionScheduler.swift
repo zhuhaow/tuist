@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 
 protocol URLSessionScheduling: AnyObject {
     /// Schedules an URLSession request and returns the result synchronously.
@@ -6,6 +7,11 @@ protocol URLSessionScheduling: AnyObject {
     /// - Parameter request: request to be executed.
     /// - Returns: request's response.
     func schedule(request: URLRequest) -> (error: Error?, data: Data?)
+
+    /// Returns an observable that schedules a URLSession request.
+    /// The data or error returned by the session are forwarded to the observers.
+    /// - Parameter request: Request to be scheduled.
+    func observable(request: URLRequest) -> Observable<Data>
 }
 
 final class URLSessionScheduler: URLSessionScheduling {
@@ -32,10 +38,6 @@ final class URLSessionScheduler: URLSessionScheduling {
         self.requestTimeout = requestTimeout
     }
 
-    /// Schedules an URLSession request and returns the result synchronously.
-    ///
-    /// - Parameter request: request to be executed.
-    /// - Returns: request's response.
     func schedule(request: URLRequest) -> (error: Error?, data: Data?) {
         var data: Data?
         var error: Error?
@@ -47,5 +49,25 @@ final class URLSessionScheduler: URLSessionScheduling {
         }.resume()
         _ = semaphore.wait(timeout: .now() + 3)
         return (error: error, data: data)
+    }
+
+    func observable(request: URLRequest) -> Observable<Data> {
+        return Observable.create { (observer) -> Disposable in
+            let task = self.session.dataTask(with: request) { sessionData, _, sessionError in
+                if let sessionError = sessionError {
+                    observer.onError(sessionError)
+                } else if let sessionData = sessionData {
+                    observer.onNext(sessionData)
+                    observer.onCompleted()
+                } else {
+                    observer.onCompleted()
+                }
+            }
+            let disposable = Disposables.create {
+                task.cancel()
+            }
+            task.resume()
+            return disposable
+        }
     }
 }
