@@ -124,7 +124,7 @@ let package = Package(
         ),
         .target(
             name: "TuistGalaxyTesting",
-            dependencies: ["TuistGalaxy", "SPMUtility", "TuistCore", "RxTest"]
+            dependencies: ["TuistGalaxy", "SPMUtility", "TuistCore", "RxTest", "RxSwift"]
         ),
         .testTarget(
             name: "TuistGalaxyIntegrationTests",
