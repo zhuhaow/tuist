@@ -2,6 +2,7 @@ import Basic
 import Foundation
 import SPMUtility
 import TuistCore
+import TuistLoader
 import TuistSupport
 import XcodeProj
 import XCTest

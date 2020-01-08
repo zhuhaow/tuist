@@ -305,10 +305,6 @@ class WorkspaceStructureGeneratorTests: XCTestCase {
             Data()
         }
 
-        func readFile(_: AbsolutePath) throws -> Data {
-            Data()
-        }
-
         func readPlistFile<T>(_: AbsolutePath) throws -> T where T: Decodable {
             return try JSONDecoder().decode(T.self, from: Data())
         }

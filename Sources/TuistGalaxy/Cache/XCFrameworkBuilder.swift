@@ -22,7 +22,7 @@ enum XCFrameworkBuilderError: FatalError {
     }
 }
 
-protocol XCFrameworkBuilding {
+public protocol XCFrameworkBuilding {
     /// It builds an xcframework for the given target.
     /// The target must have framework as product.
     ///
@@ -42,7 +42,7 @@ protocol XCFrameworkBuilding {
     func build(projectPath: AbsolutePath, target: Target) throws -> AbsolutePath
 }
 
-final class XCFrameworkBuilder: XCFrameworkBuilding {
+public final class XCFrameworkBuilder: XCFrameworkBuilding {
     // MARK: - Attributes
 
     /// When true the builder outputs the output from xcodebuild.
@@ -52,17 +52,17 @@ final class XCFrameworkBuilder: XCFrameworkBuilding {
 
     /// Initializes the builder.
     /// - Parameter printOutput: When true the builder outputs the output from xcodebuild.
-    init(printOutput: Bool = true) {
+    public init(printOutput: Bool = true) {
         self.printOutput = printOutput
     }
 
     // MARK: - XCFrameworkBuilding
 
-    func build(workspacePath: AbsolutePath, target: Target) throws -> AbsolutePath {
+    public func build(workspacePath: AbsolutePath, target: Target) throws -> AbsolutePath {
         try build(arguments: ["-workspace", workspacePath.pathString], target: target)
     }
 
-    func build(projectPath: AbsolutePath, target: Target) throws -> AbsolutePath {
+    public func build(projectPath: AbsolutePath, target: Target) throws -> AbsolutePath {
         try build(arguments: ["-project", projectPath.pathString], target: target)
     }
 

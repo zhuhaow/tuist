@@ -3,7 +3,9 @@ import Foundation
 import RxBlocking
 import RxSwift
 import TuistCore
+import TuistGalaxy
 import TuistGenerator
+import TuistLoader
 import TuistSupport
 
 protocol CacheControlling {
@@ -17,7 +19,7 @@ final class CacheController: CacheControlling {
     private let generator: Generating
 
     /// Manifest loader.
-    private let manifestLoader: GraphManifestLoading
+    private let manifestLoader: ManifestLoading
 
     /// Utility to build the xcframeworks.
     private let xcframeworkBuilder: XCFrameworkBuilding
@@ -29,7 +31,7 @@ final class CacheController: CacheControlling {
     private let cache: CacheStoraging
 
     init(generator: Generating = Generator(),
-         manifestLoader: GraphManifestLoading = GraphManifestLoader(),
+         manifestLoader: ManifestLoading = ManifestLoader(),
          xcframeworkBuilder: XCFrameworkBuilding = XCFrameworkBuilder(printOutput: false),
          cache: CacheStoraging = Cache(),
          graphContentHasher: GraphContentHashing = GraphContentHasher()) {
@@ -48,12 +50,12 @@ final class CacheController: CacheControlling {
         Printer.shared.print(section: "Hashing cacheable frameworks")
         let targets: [TargetNode: String] = try graphContentHasher.contentHashes(for: graph)
             .filter { target, hash in
-                if let exists = try self.cache.exists(hash: hash).toBlocking().first(), exists {
-                    Printer.shared.print("The target \(.bold(.raw(target.name))) with hash \(.bold(.raw(hash))) is already in the cache. Skipping...")
-                    return false
-                }
-                return true
+            if let exists = try self.cache.exists(hash: hash).toBlocking().first(), exists {
+                Printer.shared.print("The target \(.bold(.raw(target.name))) with hash \(.bold(.raw(hash))) is already in the cache. Skipping...")
+                return false
             }
+            return true
+        }
 
         var completables: [Completable] = []
         try targets.forEach { target, hash in
