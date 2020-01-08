@@ -44,7 +44,7 @@ let package = Package(
         ),
         .testTarget(
             name: "TuistCoreTests",
-            dependencies: ["TuistCore", "TuistCoreTesting", "TuistSupportTesting"]
+            dependencies: ["TuistCore", "TuistCoreTesting", "TuistSupportTesting", "TuistGalaxyTesting"]
         ),
         .testTarget(
             name: "TuistCoreIntegrationTests",
@@ -121,6 +121,10 @@ let package = Package(
         .testTarget(
             name: "TuistGalaxyTests",
             dependencies: ["TuistGalaxy", "TuistSupportTesting", "TuistCoreTesting", "RxBlocking"]
+        ),
+        .target(
+            name: "TuistGalaxyTesting",
+            dependencies: ["TuistGalaxy", "SPMUtility", "TuistCore", "RxTest"]
         ),
         .testTarget(
             name: "TuistGalaxyIntegrationTests",
