@@ -11,9 +11,13 @@ public final class CommandRegistry {
     var rawCommands: [RawCommand] = []
     var hiddenCommands: [String: HiddenCommand] = [:]
     let verboseArgument: OptionArgument<Bool>
+    
+    var allCommandNames: [String] {
+        commands.map { type(of: $0).command } + rawCommands.map { type(of: $0).command } + Array(hiddenCommands.keys)
+    }
 
     private let errorHandler: ErrorHandling
-    private let processArguments: () -> [String]
+    private let processArguments: ProcessArguments
 
     // MARK: - Init
 
@@ -34,7 +38,7 @@ public final class CommandRegistry {
     }
 
     init(errorHandler: ErrorHandling,
-         processArguments: @escaping () -> [String]) {
+         processArguments: ProcessArguments) {
         self.errorHandler = errorHandler
         parser = ArgumentParser(commandName: "tuist",
                                 usage: "<command> <options>",
@@ -47,8 +51,8 @@ public final class CommandRegistry {
                                      usage: "Enable verbose logging of System operations.")
     }
 
-    public static func processArguments() -> [String] {
-        Array(ProcessInfo.processInfo.arguments)
+    public static var processArguments: ProcessArguments {
+        .init(ProcessInfo.processInfo.arguments)
     }
 
     // MARK: - Internal
@@ -72,12 +76,12 @@ public final class CommandRegistry {
         do {
             // Hidden command
             if let hiddenCommand = hiddenCommand() {
-                try hiddenCommand.run(arguments: argumentsDroppingCommand())
+                try hiddenCommand.run(arguments: processArguments.dropCommand(matchingOne: allCommandNames))
 
                 // Raw command
-            } else if let commandName = commandName(),
+            } else if let commandName = processArguments.commandName(matchingOne: allCommandNames),
                 let command = rawCommands.first(where: { type(of: $0).command == commandName }) {
-                try command.run(arguments: argumentsDroppingCommand())
+                try command.run(arguments: processArguments.dropCommand(matchingOne: allCommandNames))
 
                 // Normal command
             } else {
@@ -99,27 +103,12 @@ public final class CommandRegistry {
 
     // MARK: - Fileprivate
 
-    func argumentsDroppingCommand() -> [String] {
-        Array(processArguments().dropFirst(2))
-    }
-
-    /// Returns the command name.
-    ///
-    /// - Returns: Command name.
-    func commandName() -> String? {
-        let arguments = processArguments()
-        if arguments.count < 2 { return nil }
-        return arguments[1]
-    }
-
     private func parse() throws -> ArgumentParser.Result {
-        let arguments = Array(processArguments().dropFirst())
-        return try parser.parse(arguments)
+        return try parser.parse(processArguments.arguments)
     }
 
     private func hiddenCommand() -> HiddenCommand? {
-        let arguments = Array(processArguments().dropFirst())
-        guard let commandName = arguments.first else { return nil }
+        guard let commandName = processArguments.commandName(matchingOne: allCommandNames) else { return nil }
         return hiddenCommands[commandName]
     }
 

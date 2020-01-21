@@ -182,7 +182,8 @@ public enum SystemError: FatalError {
 }
 
 public final class System: Systeming {
-    public var verbose: Bool = false
+    
+    @Atomic public var verbose: Bool = false
 
     /// Shared system instance.
     public static var shared: Systeming = System()

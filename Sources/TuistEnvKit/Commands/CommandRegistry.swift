@@ -9,7 +9,7 @@ public final class CommandRegistry {
     let parser: ArgumentParser
     var commands: [Command] = []
     private let errorHandler: ErrorHandling
-    private let processArguments: () -> [String]
+    private let processArguments: ProcessArguments
     private let commandRunner: CommandRunning
     private let verboseArgument: OptionArgument<Bool>
 
@@ -27,7 +27,7 @@ public final class CommandRegistry {
                   ])
     }
 
-    init(processArguments: @escaping () -> [String],
+    init(processArguments: ProcessArguments,
          errorHandler: ErrorHandling = ErrorHandler(),
          commandRunner: CommandRunning = CommandRunner(),
          commands: [Command.Type] = []) {
@@ -50,11 +50,10 @@ public final class CommandRegistry {
 
     public func run() {
         do {
-            if processArguments().dropFirst().first == "--help-env" {
+            if processArguments.arguments.contains("--help-env") {
                 parser.printUsage(on: stdoutStream)
-            } else if let parsedArguments = try parse() {
+            } else if let parsedArguments = parse() {
                 let verbose = parsedArguments.get(verboseArgument) ?? false
-
                 System.shared.verbose = verbose
                 FileHandler.shared.verbose = verbose
 
@@ -71,13 +70,8 @@ public final class CommandRegistry {
 
     // MARK: - Fileprivate
 
-    private func parse() throws -> ArgumentParser.Result? {
-        let arguments = Array(processArguments().dropFirst())
-        guard let firstArgument = arguments.first(where: { $0.hasPrefix("-") == false }) else { return nil }
-        if commands.map({ type(of: $0).command }).contains(firstArgument) {
-            return try parser.parse(arguments)
-        }
-        return nil
+    private func parse() -> ArgumentParser.Result? {
+        return try? parser.parse(processArguments.arguments)
     }
 
     private func register(command: Command.Type) {
@@ -92,7 +86,7 @@ public final class CommandRegistry {
 
     // MARK: - Static
 
-    static func processArguments() -> [String] {
-        Array(ProcessInfo.processInfo.arguments)
+    static var processArguments: ProcessArguments {
+        .init(ProcessInfo.processInfo.arguments)
     }
 }
