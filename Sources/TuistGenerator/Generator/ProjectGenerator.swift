@@ -153,7 +153,6 @@ final class ProjectGenerator: ProjectGenerating {
                                     projects: [],
                                     projectRoots: [],
                                     targets: [])
-
         pbxproj.add(object: pbxProject)
         pbxproj.rootObject = pbxProject
         return pbxProject
@@ -211,7 +210,7 @@ final class ProjectGenerator: ProjectGenerating {
                 continue
             }
 
-            var attributes = pbxProject.targetAttributes[testTarget] ?? [:]
+            var attributes = pbxProject.targetAttributes?[testTarget] ?? [:]
 
             attributes["TestTargetID"] = target
 
