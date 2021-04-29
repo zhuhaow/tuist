@@ -1,0 +1,102 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  reviewers:
+  - tuist/core
+  labels:
+  - dependencies
+  ignore:
+  - dependency-name: rubocop
+    versions:
+    - 1.10.0
+    - 1.11.0
+    - 1.12.0
+    - 1.12.1
+    - 1.8.1
+    - 1.9.0
+    - 1.9.1
+  - dependency-name: cucumber
+    versions:
+    - 5.2.0
+    - 5.3.0
+  - dependency-name: google-cloud-storage
+    versions:
+    - 1.30.0
+  - dependency-name: minitest
+    versions:
+    - 5.14.3
+- package-ecosystem: npm
+  directory: "/website"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  reviewers:
+  - tuist/core
+  labels:
+  - dependencies
+  ignore:
+  - dependency-name: gatsby-plugin-mdx
+    versions:
+    - 1.10.0
+    - 1.10.1
+    - 1.9.0
+    - 2.0.0
+    - 2.0.1
+    - 2.1.0
+    - 2.2.0
+  - dependency-name: gatsby-image
+    versions:
+    - 2.10.0
+    - 2.11.0
+    - 3.0.0
+    - 3.1.0
+    - 3.2.0
+  - dependency-name: gatsby
+    versions:
+    - 2.31.1
+    - 2.32.11
+    - 2.32.3
+    - 2.32.4
+    - 2.32.8
+    - 2.32.9
+  - dependency-name: gatsby-plugin-netlify
+    versions:
+    - 2.10.0
+    - 2.11.0
+  - dependency-name: gatsby-plugin-sharp
+    versions:
+    - 2.13.1
+    - 2.13.4
+    - 2.14.1
+  - dependency-name: gatsby-remark-images
+    versions:
+    - 3.10.0
+    - 3.11.0
+  - dependency-name: gatsby-transformer-yaml
+    versions:
+    - 2.10.0
+  - dependency-name: "@fortawesome/free-solid-svg-icons"
+    versions:
+    - 5.15.2
+  - dependency-name: "@fortawesome/free-brands-svg-icons"
+    versions:
+    - 5.15.2
+  - dependency-name: "@fortawesome/free-regular-svg-icons"
+    versions:
+    - 5.15.2
+  - dependency-name: "@fortawesome/fontawesome-svg-core"
+    versions:
+    - 1.2.34
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: prismjs
+    versions:
+    - 1.21.0
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
